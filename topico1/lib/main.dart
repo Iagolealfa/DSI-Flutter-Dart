@@ -36,6 +36,7 @@ class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = <WordPair>{};
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  bool isSwitched = false;
   // #enddocregion RWS-var
 
   // #docregion RWS-build
@@ -67,33 +68,38 @@ class _RandomWordsState extends State<RandomWords> {
           final alreadySaved = _saved.contains(_suggestions[index]);
 
           // #docregion listTile
-          return ListTile(
-            title: Text(
-              _suggestions[index].asPascalCase,
-              style: _biggerFont,
-            ),
-            trailing: Icon(
-              alreadySaved ? Icons.favorite : Icons.favorite_border,
-              color: alreadySaved ? Colors.red : null,
-              semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
-            ),
-            onTap: () {
-              setState(() {
-                if (alreadySaved) {
-                  _saved.remove(_suggestions[index]);
-                } else {
-                  _saved.add(_suggestions[index]);
-                }
-              });
-            },
+          return Card(
+              elevation: 5,
+              child: ListTile(
+                title: Text(
+                  _suggestions[index].asPascalCase,
+                  style: _biggerFont,
+                ),
+                trailing: Icon(
+                  alreadySaved ? Icons.favorite : Icons.favorite_border,
+                  color: alreadySaved ? Colors.red : null,
+                  semanticLabel: alreadySaved ? 'Remove from saved' : 'Save',
+                ),
+                onTap: () {
+                  setState(() {
+                    if (alreadySaved) {
+                      _saved.remove(_suggestions[index]);
+                    } else {
+                      _saved.add(_suggestions[index]);
+                    }
+                  });
+                },
+              )
           );
           // #enddocregion listTile
         },
-      ),
+
+      )
       // #enddocregion itemBuilder
     );
   }
-  // #enddocregion RWS-build
+
+
 
   void _pushSaved() {
     Navigator.of(context).push(
