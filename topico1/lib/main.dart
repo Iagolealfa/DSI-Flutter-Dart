@@ -54,9 +54,15 @@ class _RandomWordsState extends State<RandomWords> {
         ],
       ),
       // #docregion itemBuilder
-
-      body: ListView.builder(
+      body: GridView.builder(
+        itemCount: 100000,
         padding: const EdgeInsets.all(16.0),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 40 / 10,
+          crossAxisCount: 4,
+        ),
         itemBuilder: /*1*/ (context, i) {
           if (i.isOdd) return const Divider(); /*2*/
 
@@ -95,7 +101,8 @@ class _RandomWordsState extends State<RandomWords> {
         },
 
       )
-      // #enddocregion itemBuilder
+
+
     );
   }
 
