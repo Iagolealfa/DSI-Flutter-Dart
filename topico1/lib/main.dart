@@ -44,7 +44,6 @@ class _RandomWordsState extends State<RandomWords> {
     setState(() {
       _saved.remove(x);
       _suggestions.remove(x);
-      print(_suggestions);
     });
   }
 
