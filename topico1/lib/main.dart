@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   }
   // #enddocregion build
 }
+
 // #enddocregion MyApp
 
 // #docregion RWS-var
@@ -36,8 +37,16 @@ class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = <WordPair>{};
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  bool isSwitched = false;
+
   // #enddocregion RWS-var
+
+  void remove(x) {
+    setState(() {
+      _saved.remove(x);
+      _suggestions.remove(x);
+      print(_suggestions);
+    });
+  }
 
   // #docregion RWS-build
   @override
@@ -58,14 +67,12 @@ class _RandomWordsState extends State<RandomWords> {
           itemCount: 100000,
           padding: const EdgeInsets.all(16.0),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 40 / 10,
-            crossAxisCount: 4,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+            childAspectRatio: 80 / 10,
+            crossAxisCount: 2,
           ),
           itemBuilder: /*1*/ (context, i) {
-            if (i.isOdd) return const Divider(); /*2*/
-
             final index = i ~/ 2; /*3*/
             if (index >= _suggestions.length) {
               _suggestions.addAll(generateWordPairs().take(10)); /*4*/
@@ -74,9 +81,10 @@ class _RandomWordsState extends State<RandomWords> {
             final alreadySaved = _saved.contains(_suggestions[index]);
 
             // #docregion listTile
-            return Card(
-                elevation: 5,
-                child: ListTile(
+            return Dismissible(
+              child: Card(
+                  elevation: 5,
+                  child: ListTile(
                     title: Text(
                       _suggestions[index].asPascalCase,
                       style: _biggerFont,
@@ -97,7 +105,16 @@ class _RandomWordsState extends State<RandomWords> {
                           }
                         });
                       },
-                    )));
+                    ),
+                  )),
+              key: Key(_suggestions[index].asPascalCase),
+              background: Container(
+                color: Colors.red.withOpacity(0.4),
+              ),
+              onDismissed: (direction) {
+                remove(_suggestions[index]);
+              },
+            );
             // #enddocregion listTile
           },
         ));
